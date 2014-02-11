@@ -26,6 +26,10 @@ before do
   params.delete('_dc')
 end
 
+get '/' do
+  send_file 'public/index.html'
+end
+
 # index
 get '/tasks' do
   json_for(Task.all)
