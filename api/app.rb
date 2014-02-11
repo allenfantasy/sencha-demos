@@ -43,9 +43,9 @@ post '/tasks' do
   t = Task.new(prop)
 
   if (flag = t.save)
-    logger.info "[INFO] CREATE SUCCESS! Object: #{t.inspect}"
+    logger.info "[INFO] CREATE SUCCESS! ObjectId: #{t.id}"
   else
-    logger.info "[ERROR] CREATE FAILED! Object: #{t.inspect}"
+    logger.info "[ERROR] CREATE FAILED! ObjectId: #{t.id}"
   end
 
   { success: flag, id: t.id }.to_json
@@ -79,9 +79,9 @@ put '/tasks/:id' do
   #logger.info "Request body class: #{prop.class}"
   #logger.info "PARAMS: #{params}"
   if (flag = t.update_attributes(prop))
-    logger.info "[INFO] UPDATE SUCCESS! Object: #{t.inspect}"
+    logger.info "[INFO] UPDATE SUCCESS! ObjectId: #{t.id}"
   else
-    logger.info "[ERROR] UPDATE FAILED! Object: #{t.inspect}"
+    logger.info "[ERROR] UPDATE FAILED! ObjectId: #{t.id}"
   end
 
   { success: flag, id: id }.to_json
@@ -99,9 +99,9 @@ delete '/tasks/:id' do
   #logger.info "Request body: #{request.body.read}"
   t = Task.find(params["id"])
   if (flag = t.destroy)
-    logger.info "[INFO] DELETE SUCCESS! Object: #{t.inspect}"
+    logger.info "[INFO] DELETE SUCCESS! ObjectId: #{t.id}"
   else
-    logger.info "[INFO] DELETE FAILED! Object: #{t.inspect}"
+    logger.info "[INFO] DELETE FAILED! ObjectId: #{t.id}"
   end
 
   { success: flag }.to_json

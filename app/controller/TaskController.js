@@ -42,13 +42,9 @@ Ext.define('ToDoListApp.controller.TaskController', {
         Ext.Msg.confirm('Delete this task?', 'You cannot undo this!', function (answer) {
             if (answer === 'yes') {
                 var task = this.getTaskForm().getRecord();
-                console.log("Store COUNT: " + store.getCount());
-                // FIXME: 2 DELETE request to backend. Get rid of one.
+                // TODO: maybe we can do store operation in erase's callback?
                 store.remove(task);
-                //store.sync();
                 task.erase();
-                
-                console.log("Store COUNT: " + store.getCount());
                 this.showList();
             }
         }, this);
@@ -67,18 +63,18 @@ Ext.define('ToDoListApp.controller.TaskController', {
 
     changeDoneStatus: function (list, task, target, index, e, eOpts) {
         var done = task.get('completed');
+        var store = list.getStore();
         task.set('completed', !done);
+        task.save(); // PUT
+        store.load(); // try out
 
         e.stopEvent(); // stop 'itemsingletap' event to bubble.
-        //console.log("[EVENT] changeDoneStatus");
     },
 
     showTask: function(list, index, target, task, e, eOpts) {
         this.getTaskForm().setRecord(task); // retrieve or create a TaskForm. Then set the record.
         this.getDeleteButton().setHidden(false);
         this.showForm();
-        //console.log("[EVENT] showTask");
-
 
         var delayedTask = Ext.create('Ext.util.DelayedTask', function() {
             list.deselect(index); // free the current item in 'selected' mode(blue background)
@@ -92,48 +88,23 @@ Ext.define('ToDoListApp.controller.TaskController', {
         this.getTaskForm().updateRecord(task);
         
         // Is it a new object?
-        // FIX HERE.
         if (null === store.findRecord("id", task.get('id'))) {
             store.add(task);
             console.log("ADDING id: " + task.get("id"));
+            task.save({
+                success: function(record, operation) {
+                    var responseText = Ext.decode(operation.getResponse().responseText);
+                    //console.log('success', arguments);
+                    record.setId(responseText["id"]);
+                    record.phantom = false;
+                    console.log(record);
+                }
+            });
         }
         else {
             console.log("UPDATING");
-            oldTask = store.findRecord("id", task.get('id'));
-            //console.log(task);
-            //console.log(oldTask);
-            //console.log(task === oldTask);
-            //oldTask.set(task.getData())
+            task.save();
         }
-        //task.save();
-        //console.log("[METHOD] saveTask");
-        //console.log("before save");
-        //console.log("Store COUNT: " + store.getCount());
-        //console.log(store.getNewRecords());
-        store.sync();
-        /*var tmp = store.sync({
-            success: function(batch, syncOptions) {
-                //store.load();
-                //console.log("dirty:" + task.dirty);
-                //console.log("phantom: " + task.phantom);
-                //console.log("callback!");
-                //console.log(options);
-                var res = batch.operations[0].getResponse();
-                var responseText = Ext.decode(res.responseText);
-                //console.log(res);
-                //task.phantom = false; // for created record
-                //task.dirty = false; // for updated record
-                //task.setId(responseText["id"]);
-                console.log("Task: ");
-                console.log(task);
-            }
-        });*/ // now request to backend.
-        //console.log(tmp);
-        //console.log(store.getNewRecords());
-        // task.save()
-        // task.dirty = false; // prevent further action.
-        //console.log("after save");
-        //console.log("Store COUNT: " + store.getCount());
         this.showList();
     },
 
