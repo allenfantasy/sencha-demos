@@ -4,7 +4,7 @@ Ext.application({
     stores: [ 'TaskStore' ],
     views: [ 'TaskList', 'TaskForm' ],
     controllers: [ 'TaskController' ],
-    requires: ['Ext.navigation.View', 'Ext.log.Logger'],
+    requires: [ 'Ext.navigation.View' ],
 
     icon: {
         57: '../img/icons/Icon.png',
