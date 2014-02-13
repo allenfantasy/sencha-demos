@@ -23,13 +23,13 @@ app.cookie.delete('some_setting');
 
 */
 Ext.util.LocalStorageCookie = Ext.extend(Object, {
-  
+
   proxyId: 'com.domain.cookies',
-  
+
   constructor: function(config) {
-    
+
     this.config = Ext.apply(this, config);
-    
+
     // Create the cookie model
     Ext.regModel('LocalStorageCookie', {
       fields: [
@@ -42,13 +42,13 @@ Ext.util.LocalStorageCookie = Ext.extend(Object, {
         id: this.proxyId,
       }
     });
-    // Create the cookie store 
+    // Create the cookie store
     this.store = new Ext.data.Store({
       model: "LocalStorageCookie",
-    });    
+    });
     this.store.load();
   },
-  
+
   // Get function
   get: function(key) {
     var indexOfRecord = this.store.find('key', key, 0, false, true, true); //<-- Forcing exact matching
@@ -60,18 +60,22 @@ Ext.util.LocalStorageCookie = Ext.extend(Object, {
       return record.get('value');
     }
   },
-  
+
   // Set function
   set: function(key, value) {
     var indexOfRecord = this.store.find('key', key, 0, false, true, true); //<-- Forcing exact matching
     if (indexOfRecord == -1) {
-      var record = Ext.ModelMgr.create({key:key, value:value}, 'LocalStorageCookie');
+      var record = Ext.ModelMgr.create({
+        key : key,
+        value : value
+      }, 'LocalStorageCookie');
+      this.store.add(record);
     }
     else {
       var record = this.store.getAt(indexOfRecord);
       record.set('value', value);
       this.store.sync(); //<-- Syncing for good measure, may not be necessary
-    }  
+    }
     return record.save();
   },
 
