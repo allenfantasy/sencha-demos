@@ -39,9 +39,9 @@ post '/sign_in' do
 
   if u && u.password == encrypted_password
     # cookie
-    if params["remember_me"]
-      response.set_cookie 'token', 'ooo'
-    end
+    # if params["remember_me"]
+    #  response.set_cookie 'token', 'ooo'
+    # end
     { success: true, authToken: u.auth_token }.to_json
   else
     { success: false, message: 'invalid username and password' }.to_json
