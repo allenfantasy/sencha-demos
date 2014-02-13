@@ -33,6 +33,9 @@ Ext.application({
         { xtype: 'mainmenuview' }
       ]);
 
+      // domain
+      this.domainAddress = location.protocol + "//" + location.host;
+
       // localcookie
       this.cookie = new Ext.util.LocalStorageCookie({ proxyId: 'UserAuth.cookies' });
       //console.log(this.cookie.store.find('key', 'authToken', 0, false, true, true));

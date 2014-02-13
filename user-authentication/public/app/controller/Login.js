@@ -45,7 +45,7 @@ Ext.define('UserAuth.controller.Login', {
     });
 
     Ext.Ajax.request({
-      url: 'http://localhost:9292/sign_in',
+      url: app.domainAddress + '/sign_in',
       method: 'POST',
       params: {
         name: username,
@@ -62,6 +62,7 @@ Ext.define('UserAuth.controller.Login', {
 
           //console.log("TOKEN: " + me.authToken);
           app.cookie.set('authToken', me.authToken);
+
           me.signInSuccess(response); // Just simulating success
         } else {
           me.signInFailure(loginResponse.message);
@@ -77,11 +78,6 @@ Ext.define('UserAuth.controller.Login', {
 
   signInSuccess: function(response) {
     console.log('Signed in.');
-    // print cookie here:
-    //var cookie = response.getResponseHeader('Set-Cookie');
-    //var cookie = Ext.util.Cookies.get("token");
-    console.log("COOKIE");
-    console.log(document.cookie);
     var loginView = this.getLoginView();
     mainMenuView = this.getMainMenuView();
     loginView.setMasked(false);
@@ -100,7 +96,7 @@ Ext.define('UserAuth.controller.Login', {
         app = this.getApplication();
 
     Ext.Ajax.request({
-      url: 'http://localhost:9292/sign_off',
+      url: app.domainAddress + '/sign_off',
       method: 'POST',
       params: {
         authToken: me.authToken
@@ -110,7 +106,7 @@ Ext.define('UserAuth.controller.Login', {
         me.authToken = null;
 
         app.cookie.set('authToken', null);
-        
+
         console.log("TOKEN: " + me.authToken);
         console.log("sign off success");
       },
