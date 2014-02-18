@@ -24,7 +24,7 @@ Ext.define('ToDoListApp.model.Task', {
         // PROXY
         proxy: {
             type: 'rest',
-            url: 'http://localhost:9292/tasks',
+            url: location.protocol + "//" + location.host + '/tasks',
             reader: {
                 type: 'json',
                 rootProperty: 'data'

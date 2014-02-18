@@ -6,18 +6,6 @@ Ext.define('ToDoListApp.store.TaskStore', {
         //autoSync: true,
         model: 'ToDoListApp.model.Task',
         storeId: 'TaskStore',
-        proxy: {
-            type: 'rest',
-            url: 'http://localhost:9292/tasks',
-            reader: {
-                type: 'json',
-                rootProperty: 'data'
-            },
-            writer: {
-                type: 'json'
-            },
-            id: 'senchatasks'
-        },
         sorters: [{
             property: 'dueDate',
             direction: 'ASC'
