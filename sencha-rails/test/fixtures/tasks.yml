@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  uuid: MyString
+  dueDate: 2014-02-18
+  title: MyString
+  completed: false
+  description: MyText
+
+two:
+  uuid: MyString
+  dueDate: 2014-02-18
+  title: MyString
+  completed: false
+  description: MyText
